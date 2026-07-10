@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-parchment text-ink-900 font-body antialiased;
+}
+
+::selection {
+  @apply bg-gold-light/40 text-ink-900;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-dark font-semibold;
+  }
+
+  .eyebrow-light {
+    @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-light font-semibold;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-gold-gradient px-7 py-3
+           font-eyebrow text-[13px] tracking-[0.08em] uppercase font-semibold text-ink-900
+           shadow-[0_8px_24px_-8px_rgba(138,94,27,0.55)] transition-transform duration-200
+           hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-8px_rgba(138,94,27,0.65)]
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-dark;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink-900/15 px-7 py-3
+           font-eyebrow text-[13px] tracking-[0.08em] uppercase font-semibold text-ink-900
+           transition-colors duration-200 hover:border-gold-dark hover:text-gold-dark
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-dark;
+  }
+
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-parchment/25 px-7 py-3
+           font-eyebrow text-[13px] tracking-[0.08em] uppercase font-semibold text-parchment
+           transition-colors duration-200 hover:border-gold-light hover:text-gold-light
+           focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold-light;
+  }
+
+  .card {
+    @apply rounded-3xl border border-ink-900/8 bg-parchment-100 shadow-[0_1px_0_rgba(27,23,18,0.04)];
+  }
+}
+
+/* Signature element: the drawn infinity-loop divider echoing the mark's woven "A" */
+.loop-path {
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loop-path.in-view {
+  stroke-dashoffset: 0;
+}
