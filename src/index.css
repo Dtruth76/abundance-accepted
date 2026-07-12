@@ -2,30 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  @apply bg-parchment text-ink-900 font-body antialiased;
-}
-
-::selection {
-  @apply bg-gold-light/40 text-ink-900;
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer base {
+  /* stylelint-disable at-rule-no-unknown */
   html {
-    scroll-behavior: auto;
+    scroll-behavior: smooth;
   }
-  * {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+
+  /* stylelint-disable at-rule-no-unknown */
+  body {
+    @apply bg-parchment text-ink-900 font-body antialiased;
   }
+  /* stylelint-enable at-rule-no-unknown */
+
+  /* stylelint-disable at-rule-no-unknown */
+  ::selection {
+    @apply bg-gold-light/40 text-ink-900;
+  }
+  /* stylelint-enable at-rule-no-unknown */
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    * {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+  /* stylelint-enable at-rule-no-unknown */
 }
 
 @layer components {
+  /* stylelint-disable at-rule-no-unknown */
   .eyebrow {
     @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-dark font-semibold;
   }
@@ -57,8 +66,11 @@ body {
   }
 
   .card {
-    @apply rounded-3xl border border-ink-900/8 bg-parchment-100 shadow-[0_1px_0_rgba(27,23,18,0.04)];
+    /* stylelint-disable-next-line at-rule-no-unknown */
+    @apply rounded-3xl bg-parchment-100 shadow-[0_1px_0_rgba(27,23,18,0.04)];
+    border: 1px solid rgba(27,23,18,0.08);
   }
+  /* stylelint-enable at-rule-no-unknown */
 }
 
 /* Signature element: the drawn infinity-loop divider echoing the mark's woven "A" */
