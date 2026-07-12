@@ -56,8 +56,9 @@ export default function Books() {
                 <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
                 <p className="mt-1 text-sm font-medium text-gold-dark">{book.subtitle}</p>
                 <p className="mt-4 text-sm leading-relaxed text-ink-600">{book.description}</p>
-                
-                  href={book.amazonUrl}
+```
+
+href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary mt-6 w-fit"
@@ -75,4 +76,4 @@ export default function Books() {
       </div>
     </section>
   )
-}
+}<a
