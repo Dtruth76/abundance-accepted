@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 type Book = {
   title: string
   subtitle: string
@@ -58,37 +57,24 @@ export default function Books() {
                 <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
                 <p className="mt-1 text-sm font-medium text-gold-dark">{book.subtitle}</p>
                 <p className="mt-4 text-sm leading-relaxed text-ink-600">{book.description}</p>
-				<a
-				 href={book.amazonUrl} 
-				 target="_blank"
-				 rel="noopener noreferrer"
-				className="btn-primary mt-6 w-fit">
-					Buy on Amazon
-				</a> </div> 
-				</article>
-		  ))} 
-		  </div> 
-		  <p className="mt-6 text-xs leading-relaxed text-ink-400">
-			As an Amazon Associate, Abundance Accepted LLC may earn from qualifying purchases made
+                <a
+                  href={book.amazonUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-primary mt-6 w-fit"
+                   >
+                    Buy on Amazon
+                  </a>
+                  </div>
+                  </article> 
+                ))}
+        </div>
+
+        <p className="mt-6 text-xs leading-relaxed text-ink-400">
+          As an Amazon Associate, Abundance Accepted LLC may earn from qualifying purchases made
           through these links, at no extra cost to you.
         </p>
       </div>
     </section>
   )
 }
-=======
-[{
-	"resource": "/workspaces/abundance-accepted/abundance-accepted/src/components/Books.tsx",
-	"owner": "typescript",
-	"code": "17002",
-	"severity": 8,
-	"message": "Expected corresponding JSX closing tag for 'div'.",
-	"source": "ts",
-	"startLineNumber": 67,
-	"startColumn": 19,
-	"endLineNumber": 67,
-	"endColumn": 20,
-	"modelVersionId": 1020,
-	"origin": "extHost2"
-}]
->>>>>>> 32fcdf7003305bdff4bf3f4cb2460e03a24b357a

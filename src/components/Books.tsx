@@ -48,6 +48,7 @@ export default function Books() {
         <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-tight text-ink-900 sm:text-4xl">
           The books that started Abundance Accepted
         </h2>
+
         <div className="mt-14 grid gap-10 sm:grid-cols-2">
           {BOOKS.map((book) => (
             <article key={book.title} className="card flex flex-col gap-6 p-8 sm:flex-row">
@@ -56,10 +57,8 @@ export default function Books() {
                 <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
                 <p className="mt-1 text-sm font-medium text-gold-dark">{book.subtitle}</p>
                 <p className="mt-4 text-sm leading-relaxed text-ink-600">{book.description}</p>
-                <a
-```
-
-href={book.amazonUrl}
+                
+                  href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary mt-6 w-fit"
@@ -70,6 +69,7 @@ href={book.amazonUrl}
             </article>
           ))}
         </div>
+
         <p className="mt-6 text-xs leading-relaxed text-ink-400">
           As an Amazon Associate, Abundance Accepted LLC may earn from qualifying purchases made
           through these links, at no extra cost to you.
