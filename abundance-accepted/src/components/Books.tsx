@@ -53,21 +53,24 @@ export default function Books() {
           {BOOKS.map((book) => (
             <article key={book.title} className="card flex flex-col gap-6 p-8 sm:flex-row">
               <BookCover image={book.coverImage} title={book.title} />
-              <div className="flex flex-col">
-                <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
-                <p className="mt-1 text-sm font-medium text-gold-dark">{book.subtitle}</p>
-                <p className="mt-4 text-sm leading-relaxed text-ink-600">{book.description}</p>
+              <div className="flex flex-col justify-between">
+                <div>
+                  <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
+                  <p className="mt-1 text-sm font-medium text-gold-dark">{book.subtitle}</p>
+                  <p className="mt-4 text-sm leading-relaxed text-ink-600">{book.description}</p>
+                </div>
+
                 <a
                   href={book.amazonUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary mt-6 w-fit"
-                   >
-                    Buy on Amazon
-                  </a>
-                  </div>
-                  </article> 
-                ))}
+                >
+                  Buy on Amazon
+                </a>
+              </div>
+            </article>
+          ))}
         </div>
 
         <p className="mt-6 text-xs leading-relaxed text-ink-400">
