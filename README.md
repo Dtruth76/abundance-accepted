@@ -27,6 +27,17 @@ npm install
 npm run dev
 ```
 
+### If you want to test Netlify functions locally
+
+Use Netlify Dev so `/.netlify/functions/*` calls work during development:
+
+```bash
+npm install -g netlify-cli
+npm run dev:netlify
+```
+
+This project also has a Vite proxy configured for local Netlify function routes.
+
 ## What's included
 
 - **No top banner** — the header is a plain nav bar; the hero is typography-led, no promo strip.

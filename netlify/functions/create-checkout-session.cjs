@@ -38,7 +38,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const siteUrl = process.env.SITE_URL || "http://localhost:8888";
+    const siteUrl = process.env.SITE_URL || process.env.URL || "http://localhost:8888";
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
