@@ -9,6 +9,7 @@ export default function CheckoutCancelled() {
         ready, your membership is right here.
       </p>
       
+        <a
         href="/#membership"
         className="mt-6 rounded-full bg-stone-900 px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-stone-700"
       >
