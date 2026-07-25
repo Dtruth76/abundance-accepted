@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Philosophy from './components/Philosophy'
@@ -15,7 +15,23 @@ import Footer from './components/Footer'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import CheckoutCancelled from './pages/CheckoutCancelled'
 
-function HomePage() {
+export default function App() {
+  const [path, setPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  if (path === '/checkout-success') {
+    return <CheckoutSuccess />
+  }
+
+  if (path === '/checkout-cancelled') {
+    return <CheckoutCancelled />
+  }
+
   return (
     <div className="min-h-screen bg-parchment">
       <Header />
@@ -36,16 +52,5 @@ function HomePage() {
       </main>
       <Footer />
     </div>
-  )
-}
-
-export default function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/checkout-success" element={<CheckoutSuccess />} />
-      <Route path="/checkout-cancelled" element={<CheckoutCancelled />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
   )
 }
