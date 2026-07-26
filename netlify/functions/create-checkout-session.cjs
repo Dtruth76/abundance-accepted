@@ -1,7 +1,5 @@
 const Stripe = require("stripe");
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
 const PRICE_IDS = {
   "abundance-plus": {
     monthly: "price_1TvT6bE1ZQ0yoHJiiRthasAQ",
@@ -19,6 +17,15 @@ exports.handler = async (event) => {
   }
 
   try {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.error("Missing STRIPE_SECRET_KEY in environment variables.");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Server configuration error: missing Stripe key." }),
+      };
+    }
+
+    const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
     const { tier, billing } = JSON.parse(event.body || "{}");
     const tierPrices = PRICE_IDS[tier];
 
