@@ -12,6 +12,17 @@ const PRICE_IDS = {
 };
 
 exports.handler = async (event) => {
+  if (event.httpMethod === "GET") {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        stripeKeyPresent: !!process.env.STRIPE_SECRET_KEY,
+        siteUrl: !!process.env.SITE_URL,
+        envUrl: !!process.env.URL,
+      }),
+    };
+  }
+
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
