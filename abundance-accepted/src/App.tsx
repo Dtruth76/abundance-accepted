@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Philosophy from './components/Philosophy'
@@ -16,19 +15,13 @@ import CheckoutSuccess from './pages/CheckoutSuccess'
 import CheckoutCancelled from './pages/CheckoutCancelled'
 
 export default function App() {
-  const [path, setPath] = useState(window.location.pathname)
+  const currentPath = window.location.pathname
 
-  useEffect(() => {
-    const onPopState = () => setPath(window.location.pathname)
-    window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
-  }, [])
-
-  if (path.startsWith('/checkout-success')) {
+  if (currentPath.startsWith('/checkout-success')) {
     return <CheckoutSuccess />
   }
 
-  if (path.startsWith('/checkout-cancelled')) {
+  if (currentPath.startsWith('/checkout-cancelled')) {
     return <CheckoutCancelled />
   }
 
