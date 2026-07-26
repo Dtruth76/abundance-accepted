@@ -6,7 +6,7 @@ export default function About() {
           <div className="order-2 md:order-1">
             <p className="eyebrow">The founder</p>
             <h2 className="mt-4 font-display text-3xl font-semibold leading-tight text-ink-900 sm:text-4xl">
-              Deidra Ward
+              Deidra
             </h2>
             <div className="mt-5 space-y-4 text-[17px] leading-relaxed text-ink-600">
               <p>
