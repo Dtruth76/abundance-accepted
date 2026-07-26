@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Philosophy from './components/Philosophy'
@@ -11,8 +12,26 @@ import Membership from './components/Membership'
 import AffiliateShop from './components/AffiliateShop'
 import Newsletter from './components/Newsletter'
 import Footer from './components/Footer'
+import CheckoutSuccess from './pages/CheckoutSuccess'
+import CheckoutCancelled from './pages/CheckoutCancelled'
 
 export default function App() {
+  const [path, setPath] = useState(window.location.pathname)
+
+  useEffect(() => {
+    const onPopState = () => setPath(window.location.pathname)
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  if (path.startsWith('/checkout-success')) {
+    return <CheckoutSuccess />
+  }
+
+  if (path.startsWith('/checkout-cancelled')) {
+    return <CheckoutCancelled />
+  }
+
   return (
     <div className="min-h-screen bg-parchment">
       <Header />

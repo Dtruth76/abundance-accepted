@@ -24,11 +24,11 @@ export default function App() {
     return () => window.removeEventListener('popstate', onPopState)
   }, [])
 
-  if (path === '/checkout-success') {
+  if (path.startsWith('/checkout-success')) {
     return <CheckoutSuccess />
   }
 
-  if (path === '/checkout-cancelled') {
+  if (path.startsWith('/checkout-cancelled')) {
     return <CheckoutCancelled />
   }
 
