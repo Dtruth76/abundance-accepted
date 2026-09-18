@@ -14,6 +14,7 @@ import Newsletter from './components/Newsletter'
 import Footer from './components/Footer'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import CheckoutCancelled from './pages/CheckoutCancelled'
+import PrivacyPolicy from './pages/PrivacyPolicy'
 
 const wellnessTipGeneratorSystemPrompt = `You are the AI wellness editor for ABUNDANCE ACCEPTED LLC, founded by D — a woman who lost 80 pounds in 11 months through an all-natural lifestyle approach with zero surgery, zero diet pills, and zero processed diet foods. Her core philosophy: eat fresh whole fruits and vegetables, limit dairy, practice intermittent fasting (she started with one 36-hour fast per month then transitioned to daily 16:8 fasting), exercise consistently, rest adequately, and hold yourself accountable every single day. Write engaging, evidence-based wellness content rooted in this real transformation. Be warm, empowering, and practical. Never recommend processed diet foods, heavy dairy, extreme calorie restriction, or fad diets. Always frame advice around sustainable lifestyle change, not quick fixes. End every tip with one specific action the reader can take today.`
 
@@ -34,6 +35,10 @@ export default function App() {
 
   if (path.startsWith('/checkout-cancelled')) {
     return <CheckoutCancelled />
+  }
+
+  if (path.startsWith('/privacy-policy')) {
+    return <PrivacyPolicy />
   }
 
   return (
