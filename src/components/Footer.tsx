@@ -16,7 +16,6 @@ export default function Footer() {
             <a href="#books" className="hover:text-gold-dark">Books</a>
             <a href="#biofit" className="hover:text-gold-dark">BioFit™</a>
             <a href="#membership" className="hover:text-gold-dark">Membership</a>
-            <a href="#shop" className="hover:text-gold-dark">Shop</a>
             <a href="#newsletter" className="hover:text-gold-dark">Newsletter</a>
           </div>
         </div>

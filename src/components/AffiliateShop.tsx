@@ -5,7 +5,7 @@ const PLACEHOLDER_PRODUCTS = [
   { name: 'Sleep mask & wind-down kit', category: 'Recovery' },
 ]
 
-export default function AffiliateShop() {
+export default function Shop() {
   return (
     <section id="shop" className="bg-parchment-200">
       <div className="mx-auto max-w-6xl px-6 py-24">

@@ -5,7 +5,6 @@ const LINKS = [
   { href: '#books', label: 'Books' },
   { href: '#biofit', label: 'BioFit™' },
   { href: '#membership', label: 'Membership' },
-  { href: '#shop', label: 'Shop' },
 ]
 
 export default function Header() {
