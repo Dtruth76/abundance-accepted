@@ -23,6 +23,7 @@ export default function Footer() {
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-600">
           <a href="/privacy-policy" className="hover:text-gold-dark">Privacy Policy</a>
           <a href="/terms-of-service" className="hover:text-gold-dark">Terms of Service</a>
+          <a href="/disclaimer" className="hover:text-gold-dark">Disclaimer</a>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-ink-900/8 pt-8 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
