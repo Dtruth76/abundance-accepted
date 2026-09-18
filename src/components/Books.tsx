@@ -30,11 +30,11 @@ const BOOKS: Book[] = [
 
 function BookCover({ image, title }: { image: string; title: string }) {
   return (
-    <div className="relative aspect-[2/3] w-full max-w-[220px] overflow-hidden rounded-md shadow-[0_20px_40px_-16px_rgba(27,23,18,0.45)]">
+    <div className="relative aspect-[2/3] w-full max-w-[220px] overflow-hidden rounded-md bg-white p-2 shadow-[0_20px_40px_-16px_rgba(27,23,18,0.45)]">
       <img
         src={image}
         alt={`${title} book cover`}
-        className="h-full w-full object-cover"
+        className="h-full w-full rounded-sm object-contain"
       />
     </div>
   )
@@ -49,10 +49,12 @@ export default function Books() {
           The books that started Abundance Accepted
         </h2>
 
-        <div className="mt-14 grid gap-10 sm:grid-cols-2">
+        <div className="mt-14 grid gap-10 lg:gap-12 sm:grid-cols-2">
           {BOOKS.map((book) => (
-            <article key={book.title} className="card flex flex-col gap-6 p-8 sm:flex-row">
-              <BookCover image={book.coverImage} title={book.title} />
+            <article key={book.title} className="card flex flex-col gap-6 p-6 sm:p-8 sm:flex-row sm:items-center lg:gap-8">
+              <div className="flex justify-center sm:min-w-[200px] lg:min-w-[230px]">
+                <BookCover image={book.coverImage} title={book.title} />
+              </div>
               <div className="flex flex-col justify-between">
                 <div>
                   <h3 className="font-display text-2xl font-semibold text-ink-900">{book.title}</h3>
