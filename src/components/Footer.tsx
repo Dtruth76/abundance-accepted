@@ -11,14 +11,18 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm text-ink-600 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm text-ink-600 sm:grid-cols-5">
             <a href="#approach" className="hover:text-gold-dark">Our Approach</a>
             <a href="#books" className="hover:text-gold-dark">Books</a>
             <a href="#biofit" className="hover:text-gold-dark">BioFit™</a>
             <a href="#membership" className="hover:text-gold-dark">Membership</a>
             <a href="#newsletter" className="hover:text-gold-dark">Newsletter</a>
-            <a href="/privacy-policy" className="hover:text-gold-dark">Privacy Policy</a>
           </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-ink-600">
+          <a href="/privacy-policy" className="hover:text-gold-dark">Privacy Policy</a>
+          <a href="/terms-of-service" className="hover:text-gold-dark">Terms of Service</a>
         </div>
 
         <div className="mt-12 flex flex-col gap-4 border-t border-ink-900/8 pt-8 text-xs text-ink-400 sm:flex-row sm:items-center sm:justify-between">
