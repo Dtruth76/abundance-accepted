@@ -1,4 +1,4 @@
-const PLACEHOLDER_PRODUCTS = [
+const featuredProducts = [
   { name: 'Resistance band set', category: 'Movement' },
   { name: 'Insulated water bottle', category: 'Hydration' },
   { name: 'Cast iron skillet', category: 'Real food' },
@@ -14,26 +14,18 @@ export default function Shop() {
           Tools Deidra actually uses
         </h2>
         <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-ink-600">
-          A running list of the everyday products behind the approach — swap these placeholders
-          for your real affiliate links and photos before launch.
+          A curated list of the everyday tools that support the approach.
         </p>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PLACEHOLDER_PRODUCTS.map((product) => (
+          {featuredProducts.map((product) => (
             <div key={product.name} className="card flex flex-col overflow-hidden">
-              <div className="flex aspect-square items-center justify-center bg-ink-900/5">
-                <span className="font-eyebrow text-[11px] uppercase tracking-[0.2em] text-ink-400">
-                  Product photo
-                </span>
-              </div>
+              <div className="flex aspect-square items-center justify-center bg-ink-900/5" aria-hidden="true" />
               <div className="p-5">
                 <span className="eyebrow">{product.category}</span>
                 <h3 className="mt-2 font-display text-lg font-semibold text-ink-900">
                   {product.name}
                 </h3>
-                <a href="#" className="btn-ghost mt-4 w-full text-center text-[11px]">
-                  Add Affiliate Link
-                </a>
               </div>
             </div>
           ))}
