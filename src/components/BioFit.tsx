@@ -61,7 +61,7 @@ export default function BioFit() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          systemPrompt: PHILOSOPHY_SYSTEM_PROMPT,
+          system: PHILOSOPHY_SYSTEM_PROMPT,
           messages: [...history, { role: 'user', content: text }],
         }),
       })
