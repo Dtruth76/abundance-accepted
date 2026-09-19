@@ -1,134 +1,187 @@
 import { useState } from 'react'
-import { startCheckout, type MembershipTier } from '../lib/stripeCheckout'
 
-const TIERS: Array<{
-  name: string
-  tierId?: MembershipTier // omitted for the free tier
-  tagline: string
-  monthlyPrice: string
-  annualPrice: string
-  annualNote?: string
-  features: string[]
-  featured: boolean
-}> = [
-  {
-    name: 'Community',
-    tagline: 'Start here',
-    monthlyPrice: 'Free',
-    annualPrice: 'Free',
-    features: ['Weekly workout of the week', 'Newsletter with tips & recipes', 'Blog & recipe library'],
-    featured: false,
-  },
-  {
-    name: 'Abundance+',
-    tierId: 'abundance-plus',
-    tagline: 'For the daily habit-builder',
-    monthlyPrice: '$9.99/mo',
-    annualPrice: '$89.99/yr',
-    annualNote: 'Save ~25%',
-    features: [
-      'Everything in Community',
-      'Full workout plan library',
-      'Meal plan templates & recipes',
-      'Monthly new content drops',
-    ],
-    featured: true,
-  },
-  {
-    name: 'VIP Circle',
-    tierId: 'vip-circle',
-    tagline: 'For hands-on support',
-    monthlyPrice: '$24.99/mo',
-    annualPrice: '$249.99/yr',
-    annualNote: 'Save ~17%',
-    features: [
-      'Everything in Abundance+',
-      'Personalized plan adjustments',
-      'Early access to BioFit™ app features',
-      'Priority email access to Deidra',
-    ],
-    featured: false,
-  },
-]
+const PLUS_PRICE_ID = 'price_1Tvod3CveE8X0WZ1ap6mRbsW'
+const ELITE_PRICE_ID = 'price_1TvpEfCveE8X0WZ1thApv17k'
 
 export default function Membership() {
-  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
+  const [loading, setLoading] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleCheckout = async (priceId: string, planName: string) => {
+    setLoading(planName)
+    setError(null)
+    try {
+      const response = await fetch('/.netlify/functions/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      })
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        setError('Unable to start checkout. Please try again.')
+      }
+    } catch {
+      setError('Connection error. Please try again.')
+    } finally {
+      setLoading(null)
+    }
+  }
+
+  const plans = [
+    {
+      name: 'Free',
+      price: '$0',
+      period: 'forever',
+      color: '#7DAF6E',
+      highlight: false,
+      features: [
+        'Daily wellness tips',
+        'Access to free articles',
+        'BioFit basic coaching',
+        'Community access',
+      ],
+      cta: 'Join Free',
+      action: () => {
+        document.getElementById('newsletter')?.scrollIntoView({ behavior: 'smooth' })
+      },
+    },
+    {
+      name: 'Abundance Plus',
+      price: '$14.99',
+      period: 'per month',
+      color: '#C9A84C',
+      highlight: true,
+      features: [
+        'Everything in Free',
+        'Full BioFit AI coaching',
+        'Premium article library',
+        'Weekly meal prep guides',
+        'Ad-free experience',
+        'Priority support',
+      ],
+      cta: loading === 'Abundance Plus' ? 'Loading...' : 'Start 7-Day Free Trial',
+      action: () => handleCheckout(PLUS_PRICE_ID, 'Abundance Plus'),
+    },
+    {
+      name: 'Elite',
+      price: '$39.99',
+      period: 'per month',
+      color: '#E8C46A',
+      highlight: false,
+      features: [
+        'Everything in Abundance Plus',
+        '1-on-1 AI health coaching',
+        'Custom supplement guidance',
+        'Monthly group calls',
+        'Early access to new content',
+      ],
+      cta: loading === 'Elite' ? 'Loading...' : 'Join Elite',
+      action: () => handleCheckout(ELITE_PRICE_ID, 'Elite'),
+    },
+  ]
 
   return (
-    <section id="membership" className="bg-parchment">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <p className="eyebrow">Membership</p>
-        <h2 className="mt-4 max-w-xl font-display text-3xl font-semibold leading-tight text-ink-900 sm:text-4xl">
-          Pick your level of support
-        </h2>
-
-        <div className="mt-8 inline-flex items-center rounded-full border border-ink-900/10 bg-white p-1">
-          <button
-            onClick={() => setBilling('monthly')}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              billing === 'monthly' ? 'bg-ink-900 text-parchment' : 'text-ink-600'
-            }`}
-          >
-            Monthly
-          </button>
-          <button
-            onClick={() => setBilling('annual')}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              billing === 'annual' ? 'bg-ink-900 text-parchment' : 'text-ink-600'
-            }`}
-          >
-            Annual
-          </button>
+    <section id="membership" className="bg-parchment py-24 px-6">
+      <div className="mx-auto max-w-6xl">
+        <div className="text-center mb-16">
+          <p className="eyebrow">Membership</p>
+          <h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl text-moss">
+            Choose Your Abundance Level
+          </h2>
+          <p className="mt-4 text-moss/70 text-lg max-w-xl mx-auto">
+            From free access to elite coaching — there is a plan for every stage of your wellness journey.
+          </p>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {TIERS.map((tier) => (
+        {error && (
+          <div className="mb-8 text-center text-red-600 bg-red-50 border border-red-200 rounded-xl px-6 py-4 max-w-md mx-auto">
+            {error}
+          </div>
+        )}
+
+        <div className="grid gap-8 md:grid-cols-3">
+          {plans.map((plan) => (
             <div
-              key={tier.name}
-              className={`flex flex-col rounded-3xl p-8 ${
-                tier.featured
-                  ? 'bg-ink-900 text-parchment shadow-[0_24px_48px_-16px_rgba(27,23,18,0.35)]'
-                  : 'card text-ink-900'
+              key={plan.name}
+              className={`relative rounded-3xl p-8 flex flex-col ${
+                plan.highlight
+                  ? 'bg-moss text-parchment shadow-2xl scale-105'
+                  : 'bg-white text-moss border border-moss/10'
               }`}
             >
-              <span className={`eyebrow ${tier.featured ? 'eyebrow-light' : ''}`}>{tier.tagline}</span>
-              <h3 className="mt-3 font-display text-2xl font-semibold">{tier.name}</h3>
-              <p className={`mt-1 text-2xl font-semibold ${tier.featured ? 'text-gold-light' : 'text-gold-dark'}`}>
-                {billing === 'monthly' ? tier.monthlyPrice : tier.annualPrice}
-              </p>
-              {tier.annualNote && billing === 'annual' && (
-                <p className={`text-xs ${tier.featured ? 'text-parchment/60' : 'text-ink-400'}`}>
-                  {tier.annualNote}
-                </p>
+              {plan.highlight && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gold-light text-moss text-xs font-bold px-4 py-1.5 rounded-full whitespace-nowrap">
+                  MOST POPULAR
+                </div>
               )}
-              <ul className="mt-6 flex-1 space-y-3 text-sm">
-                {tier.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span
-                      className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                        tier.featured ? 'bg-gold-light' : 'bg-gold-dark'
-                      }`}
-                    />
-                    <span className={tier.featured ? 'text-parchment/80' : 'text-ink-600'}>{f}</span>
+
+              <div className="mb-6">
+                <h3
+                  className="font-display text-xl font-semibold mb-2"
+                  style={{ color: plan.highlight ? '#C9A84C' : '#0A2E1A' }}
+                >
+                  {plan.name}
+                </h3>
+                <div className="flex items-baseline gap-1">
+                  <span
+                    className="font-display text-4xl font-bold"
+                    style={{ color: plan.color }}
+                  >
+                    {plan.price}
+                  </span>
+                  <span className={`text-sm ${plan.highlight ? 'text-parchment/60' : 'text-moss/50'}`}>
+                    {plan.period}
+                  </span>
+                </div>
+              </div>
+
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3">
+                    <span style={{ color: plan.color }} className="mt-0.5 font-bold flex-shrink-0">
+                      ✓
+                    </span>
+                    <span className={`text-sm ${plan.highlight ? 'text-parchment/80' : 'text-moss/70'}`}>
+                      {feature}
+                    </span>
                   </li>
                 ))}
               </ul>
 
-              {tier.tierId ? (
-                <button
-                  onClick={() => startCheckout(tier.tierId as MembershipTier, billing)}
-                  className={`mt-8 ${tier.featured ? 'btn-primary' : 'btn-ghost'}`}
-                >
-                  Get Started
-                </button>
-              ) : (
-                <a href="#newsletter" className="mt-8 btn-ghost">
-                  Join Free
-                </a>
+              <button
+                onClick={plan.action}
+                disabled={loading === plan.name}
+                className={`w-full rounded-full py-3 px-6 text-sm font-semibold transition-all ${
+                  plan.highlight
+                    ? 'bg-gold-light text-moss hover:opacity-90'
+                    : 'border-2 hover:opacity-80'
+                } ${loading === plan.name ? 'opacity-60 cursor-not-allowed' : ''}`}
+                style={
+                  !plan.highlight
+                    ? { borderColor: plan.color, color: plan.color }
+                    : {}
+                }
+              >
+                {plan.cta}
+              </button>
+
+              {plan.name !== 'Free' && (
+                <p className={`text-xs text-center mt-3 ${plan.highlight ? 'text-parchment/50' : 'text-moss/40'}`}>
+                  Cancel anytime. No hidden fees.
+                </p>
               )}
             </div>
           ))}
         </div>
+
+        <p className="text-center text-moss/50 text-xs mt-12">
+          Payments processed securely by Stripe. By subscribing you agree to our Terms of Service.
+          <br />
+          ⚕️ Membership content is for informational purposes only and does not constitute medical advice.
+          © 2026 Abundance Accepted LLC. All Rights Reserved.
+        </p>
       </div>
     </section>
   )
