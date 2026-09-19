@@ -57,21 +57,26 @@ export default function BioFit() {
     }))
 
     try {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-6',
-          max_tokens: 1000,
-          system: PHILOSOPHY_SYSTEM_PROMPT,
+          systemPrompt: PHILOSOPHY_SYSTEM_PROMPT,
           messages: [...history, { role: 'user', content: text }],
         }),
       })
+
       const data = await response.json()
-      const reply = data.content?.[0]?.text || 'Please try again.'
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Chat request failed.')
+      }
+
+      const reply = data.reply || 'Please try again.'
       setMessages(prev => [...prev, { from: 'ai', text: reply }])
-    } catch {
-      setMessages(prev => [...prev, { from: 'ai', text: 'Connection issue. Please try again.' }])
+    } catch (error) {
+      console.error('BioFit chat error:', error)
+      setMessages(prev => [...prev, { from: 'ai', text: 'I hit a connection issue. Please try again in a moment.' }])
     } finally {
       setLoading(false)
     }
