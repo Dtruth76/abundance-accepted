@@ -9,7 +9,7 @@ import Books from './components/Books'
 import BioFit from './components/BioFit'
 import AdSlot from './components/AdSlot'
 import Membership from './components/Membership'
-import AffiliateShop from './components/AffiliateShop'
+
 import Newsletter from './components/Newsletter'
 import Footer from './components/Footer'
 import CheckoutSuccess from './pages/CheckoutSuccess'
@@ -66,7 +66,7 @@ export default function App() {
           <AdSlot />
         </div>
         <Membership />
-        <AffiliateShop />
+
         <Newsletter />
       </main>
       <Footer />
