@@ -27,7 +27,7 @@ export const handler = async (event: any) => {
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({ reply: text }),
     }
   } catch (e) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Failed to connect' }) }
