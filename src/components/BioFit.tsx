@@ -19,16 +19,39 @@ interface Message {
   text: string
 }
 
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
+}
+
 export default function BioFit() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      from: 'ai',
-      text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+  const [messages, setMessages] = useState<Message[]>(() => {
+    try {
+      const saved = localStorage.getItem('biofit-chat-history')
+      if (!saved) {
+        return [{
+          from: 'ai',
+          text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+        }]
+      }
+
+      const parsed = JSON.parse(saved) as Message[]
+      return Array.isArray(parsed) && parsed.length > 0 ? parsed : [{
+        from: 'ai',
+        text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+      }]
+    } catch {
+      return [{
+        from: 'ai',
+        text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+      }]
     }
-  ])
+  })
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [isOffline, setIsOffline] = useState(!navigator.onLine)
   const chatRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,14 +60,50 @@ export default function BioFit() {
     }
   }, [messages])
 
-  const quickQuestions = [
-    'How do I start intermittent fasting?',
-    'What should I eat to lose weight naturally?',
-    'How did D lose 80 pounds?',
-    'I hit a plateau — what do I do?',
-  ]
+  useEffect(() => {
+    localStorage.setItem('biofit-chat-history', JSON.stringify(messages))
+  }, [messages])
 
-  const send = async () => {
+  useEffect(() => {
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+      setInstallPrompt(event as BeforeInstallPromptEvent)
+    }
+
+    const onAppInstalled = () => setInstallPrompt(null)
+    const onOnline = () => setIsOffline(false)
+    const onOffline = () => setIsOffline(true)
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+    window.addEventListener('appinstalled', onAppInstalled)
+    window.addEventListener('online', onOnline)
+    window.addEventListener('offline', onOffline)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', onAppInstalled)
+      window.removeEventListener('online', onOnline)
+      window.removeEventListener('offline', onOffline)
+    }
+  }, [])
+
+  const handleInstallClick = async () => {
+    if (!installPrompt) return
+
+    installPrompt.prompt()
+    await installPrompt.userChoice
+    setInstallPrompt(null)
+  }
+
+  const handleSend = async () => {
+    if (isOffline) {
+      setMessages(prev => [...prev, {
+        from: 'ai',
+        text: 'You’re offline right now, but your last messages are saved on this device. When your connection is back, you can continue the conversation.'
+      }])
+      return
+    }
+
     const text = input.trim()
     if (!text || loading) return
     setInput('')
@@ -81,6 +140,13 @@ export default function BioFit() {
       setLoading(false)
     }
   }
+
+  const quickQuestions = [
+    'How do I start intermittent fasting?',
+    'What should I eat to lose weight naturally?',
+    'How did D lose 80 pounds?',
+    'I hit a plateau — what do I do?',
+  ]
 
   return (
     <section id="biofit" className="bg-moss text-parchment">
@@ -146,9 +212,11 @@ export default function BioFit() {
                 <div className="h-8 w-8 rounded-full bg-gold-light/20 flex items-center justify-center text-sm">🌿</div>
                 <div>
                   <div className="text-sm font-semibold text-gold-light">BioFit AI Coach</div>
-                  <div className="text-xs text-parchment/50">Abundance Accepted LLC · Online</div>
+                  <div className="text-xs text-parchment/50">
+                    {isOffline ? 'Abundance Accepted LLC · Offline mode' : 'Abundance Accepted LLC · Online'}
+                  </div>
                 </div>
-                <div className="ml-auto h-2 w-2 rounded-full bg-green-400" />
+                <div className={`ml-auto h-2 w-2 rounded-full ${isOffline ? 'bg-amber-400' : 'bg-green-400'}`} />
               </div>
 
               {/* Messages */}
@@ -207,20 +275,33 @@ export default function BioFit() {
                 <input
                   type="text"
                   value={input}
+                  disabled={isOffline}
                   onChange={e => setInput(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && send()}
-                  placeholder="Ask your coach anything..."
-                  className="flex-1 rounded-full bg-parchment/10 border border-parchment/20 px-4 py-2 text-sm text-parchment placeholder:text-parchment/40 outline-none focus:border-gold-light/50"
+                  onKeyDown={e => e.key === 'Enter' && handleSend()}
+                  placeholder={isOffline ? 'Offline — chat history is saved locally' : 'Ask your coach anything...'}
+                  className="flex-1 rounded-full bg-parchment/10 border border-parchment/20 px-4 py-2 text-sm text-parchment placeholder:text-parchment/40 outline-none focus:border-gold-light/50 disabled:cursor-not-allowed disabled:opacity-60"
                 />
                 <button
-                  onClick={send}
-                  disabled={loading}
+                  onClick={handleSend}
+                  disabled={loading || isOffline}
                   className="rounded-full bg-gold-light/20 border border-gold-light/40 px-4 py-2 text-sm text-gold-light hover:bg-gold-light/30 transition-colors disabled:opacity-50"
                 >
-                  Send
+                  {isOffline ? 'Offline' : 'Send'}
                 </button>
               </div>
             </div>
+
+            {installPrompt && (
+              <div className="mt-6 rounded-2xl border border-gold-light/30 bg-gold-light/10 p-5">
+                <div className="text-sm font-semibold text-gold-light mb-2">Install BioFit</div>
+                <div className="text-parchment/75 text-sm mb-4">
+                  Keep your coaching close at hand. Add BioFit to your home screen for quick access anytime.
+                </div>
+                <button type="button" onClick={handleInstallClick} className="btn-primary text-sm">
+                  Add to Home Screen
+                </button>
+              </div>
+            )}
 
             {/* Books CTA */}
             <div className="mt-6 rounded-2xl border border-parchment/10 bg-parchment/5 p-5">
