@@ -1,0 +1,19 @@
+{
+  "name": "Abundance Accepted",
+  "short_name": "Abundance",
+  "description": "BioFit wellness coaching and natural lifestyle guidance from Abundance Accepted.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f0e5",
+  "theme_color": "#1d3d31",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

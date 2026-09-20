@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Philosophy from './components/Philosophy'
+
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed'; platform: string }>
+}
 import LoopDivider from './components/LoopDivider'
 import Approach from './components/Approach'
 import About from './components/About'
@@ -25,12 +30,43 @@ const aiChatWidgetSystemPrompt = `You are the personal AI wellness coach for ABU
 
 export default function App() {
   const [path, setPath] = useState(window.location.pathname)
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   useEffect(() => {
     const onPopState = () => setPath(window.location.pathname)
     window.addEventListener('popstate', onPopState)
-    return () => window.removeEventListener('popstate', onPopState)
+
+    const onBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault()
+      setDeferredPrompt(event as BeforeInstallPromptEvent)
+    }
+
+    const onAppInstalled = () => setDeferredPrompt(null)
+    const onOnline = () => setIsOnline(true)
+    const onOffline = () => setIsOnline(false)
+
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+    window.addEventListener('appinstalled', onAppInstalled)
+    window.addEventListener('online', onOnline)
+    window.addEventListener('offline', onOffline)
+
+    return () => {
+      window.removeEventListener('popstate', onPopState)
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt)
+      window.removeEventListener('appinstalled', onAppInstalled)
+      window.removeEventListener('online', onOnline)
+      window.removeEventListener('offline', onOffline)
+    }
   }, [])
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return
+
+    deferredPrompt.prompt()
+    await deferredPrompt.userChoice
+    setDeferredPrompt(null)
+  }
 
   if (path.startsWith('/checkout-success')) {
     return <CheckoutSuccess />
@@ -54,6 +90,24 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-parchment">
+      {!isOnline && (
+        <div className="fixed left-1/2 top-4 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 rounded-full border border-moss/20 bg-ink-900 px-4 py-2 text-center text-sm text-parchment shadow-lg">
+          Offline mode is active. Cached content is still available.
+        </div>
+      )}
+
+      {deferredPrompt && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <button
+            type="button"
+            onClick={handleInstallClick}
+            className="btn-primary shadow-lg"
+          >
+            Install BioFit
+          </button>
+        </div>
+      )}
+
       <Header />
       <main>
         <Hero />
