@@ -11,6 +11,7 @@ import AdSlot from './components/AdSlot'
 import Membership from './components/Membership'
 
 import Newsletter from './components/Newsletter'
+import ContentAgent from './components/ContentAgent'
 import Footer from './components/Footer'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import CheckoutCancelled from './pages/CheckoutCancelled'
@@ -66,7 +67,7 @@ export default function App() {
           <AdSlot />
         </div>
         <Membership />
-
+        <ContentAgent />
         <Newsletter />
       </main>
       <Footer />
