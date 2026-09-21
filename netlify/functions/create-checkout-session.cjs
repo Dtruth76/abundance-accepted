@@ -23,12 +23,14 @@ exports.handler = async (event) => {
     }
 
     const params = new URLSearchParams()
+    const siteUrl = 'https://abundance-accepted.com'
+
     params.append('mode', 'subscription')
     params.append('payment_method_types[]', 'card')
     params.append('line_items[0][price]', priceId)
     params.append('line_items[0][quantity]', '1')
-    params.append('success_url', 'https://abundance-accepted.com/success')
-    params.append('cancel_url', 'https://abundance-accepted.com/#membership')
+    params.append('success_url', `${siteUrl}/checkout-success?session_id={CHECKOUT_SESSION_ID}`)
+    params.append('cancel_url', `${siteUrl}/checkout-cancelled`)
 
     const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
