@@ -20,6 +20,7 @@ import ContentAgent from './components/ContentAgent'
 import Footer from './components/Footer'
 import CheckoutSuccess from './pages/CheckoutSuccess'
 import CheckoutCancelled from './pages/CheckoutCancelled'
+import SubscriptionCancelled from './pages/SubscriptionCancelled'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsPage from './pages/TermsPage'
 import DisclaimerPage from './pages/DisclaimerPage'
@@ -74,6 +75,10 @@ export default function App() {
 
   if (path.startsWith('/checkout-cancelled')) {
     return <CheckoutCancelled />
+  }
+
+  if (path.startsWith('/subscription-cancelled')) {
+    return <SubscriptionCancelled />
   }
 
   if (path.startsWith('/privacy-policy')) {

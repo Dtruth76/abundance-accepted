@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 const PLUS_PRICE_ID = 'price_1Tvod3CveE8X0WZ1ap6mRbsW'
 const ELITE_PRICE_ID = 'price_1TvpEfCveE8X0WZ1thApv17k'
+const STRIPE_SESSION_KEY = 'abundanceAcceptedStripeSessionId'
 
 export default function Membership() {
   const [loading, setLoading] = useState<string | null>(null)
@@ -29,8 +30,41 @@ export default function Membership() {
     }
   }
 
-  const handleManageSubscription = () => {
-    setError('Use the Manage subscription button on the confirmation page after checkout to open Stripe Billing.')
+  const handleManageSubscription = async () => {
+    const sessionId = window.localStorage.getItem(STRIPE_SESSION_KEY)
+
+    if (!sessionId) {
+      setError('No active Stripe checkout session was found. Please complete a purchase first, then use the confirmation page to manage your subscription.')
+      return
+    }
+
+    setLoading('Manage subscription')
+    setError(null)
+
+    try {
+      const response = await fetch('/.netlify/functions/create-portal-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Unable to open the billing portal.')
+      }
+
+      if (data.url) {
+        window.location.href = data.url
+        return
+      }
+
+      throw new Error('No billing portal URL returned.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to open the billing portal.')
+    } finally {
+      setLoading(null)
+    }
   }
 
   const plans = [

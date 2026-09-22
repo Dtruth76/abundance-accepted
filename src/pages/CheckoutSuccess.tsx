@@ -7,7 +7,12 @@ export default function CheckoutSuccess() {
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
-    setSessionId(params.get('session_id') || '')
+    const nextSessionId = params.get('session_id') || ''
+    setSessionId(nextSessionId)
+
+    if (nextSessionId) {
+      window.localStorage.setItem('abundanceAcceptedStripeSessionId', nextSessionId)
+    }
   }, [])
 
   const handleManageSubscription = async () => {
@@ -44,6 +49,12 @@ export default function CheckoutSuccess() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (sessionId) {
+      void handleManageSubscription()
+    }
+  }, [sessionId])
 
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center bg-stone-50 px-6 text-center">

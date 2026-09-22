@@ -46,7 +46,7 @@ exports.handler = async (event) => {
 
     const params = new URLSearchParams()
     params.append('customer', resolvedCustomerId)
-    params.append('return_url', 'https://abundance-accepted.com/checkout-success')
+    params.append('return_url', 'https://abundance-accepted.com/subscription-cancelled')
 
     const response = await fetch('https://api.stripe.com/v1/billing_portal/sessions', {
       method: 'POST',
