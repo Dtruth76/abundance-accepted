@@ -29,6 +29,10 @@ export default function Membership() {
     }
   }
 
+  const handleManageSubscription = () => {
+    setError('Use the Manage subscription button on the confirmation page after checkout to open Stripe Billing.')
+  }
+
   const plans = [
     {
       name: 'Free',
@@ -166,6 +170,16 @@ export default function Membership() {
               >
                 {plan.cta}
               </button>
+
+              {plan.name !== 'Free' && (
+                <button
+                  type="button"
+                  onClick={handleManageSubscription}
+                  className="mt-3 w-full rounded-full border border-parchment/20 bg-transparent px-4 py-2 text-xs font-medium text-moss/70 transition hover:text-moss"
+                >
+                  Manage subscription
+                </button>
+              )}
 
               {plan.name !== 'Free' && (
                 <p className={`text-xs text-center mt-3 ${plan.highlight ? 'text-parchment/50' : 'text-moss/40'}`}>
