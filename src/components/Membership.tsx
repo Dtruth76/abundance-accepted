@@ -130,6 +130,7 @@ export default function Membership() {
           </h2>
           <p className="mt-4 text-moss/70 text-lg max-w-xl mx-auto">
             From free access to elite coaching — there is a plan for every stage of your wellness journey.
+            Abundance Plus includes a 7-day free trial before the first monthly charge begins.
           </p>
         </div>
 
@@ -217,7 +218,7 @@ export default function Membership() {
 
               {plan.name !== 'Free' && (
                 <p className={`text-xs text-center mt-3 ${plan.highlight ? 'text-parchment/50' : 'text-moss/40'}`}>
-                  Cancel anytime. No hidden fees.
+                  {plan.name === 'Abundance Plus' ? '7-day free trial. Cancel anytime before billing begins.' : 'Cancel anytime. No hidden fees.'}
                 </p>
               )}
             </div>

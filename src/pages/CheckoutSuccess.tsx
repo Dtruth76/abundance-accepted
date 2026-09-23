@@ -64,6 +64,9 @@ export default function CheckoutSuccess() {
       <p className="mt-3 max-w-md text-stone-600">
         Thanks for joining Abundance Accepted. A confirmation email is on its way — check your inbox to get started.
       </p>
+      <p className="mt-3 max-w-lg text-sm text-stone-600">
+        Your 7-day free trial has started. You will not be charged until the trial ends, and you can cancel anytime before billing begins.
+      </p>
 
       {error && (
         <p className="mt-4 max-w-md text-sm text-red-600">{error}</p>

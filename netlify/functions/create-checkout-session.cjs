@@ -39,6 +39,9 @@ exports.handler = async (event) => {
           quantity: 1,
         },
       ],
+      subscription_data: {
+        trial_period_days: 7,
+      },
       billing_address_collection: 'auto',
       payment_method_collection: 'always',
       allow_promotion_codes: true,
