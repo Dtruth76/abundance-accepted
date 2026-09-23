@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const PLUS_PRICE_ID = 'price_1Tvod3CveE8X0WZ1ap6mRbsW'
+const PLUS_PRICE_ID = 'price_1UIjNkCveE8X0WZ1hmhwAB86'
 const ELITE_PRICE_ID = 'price_1TvpEfCveE8X0WZ1thApv17k'
 const STRIPE_SESSION_KEY = 'abundanceAcceptedStripeSessionId'
 
