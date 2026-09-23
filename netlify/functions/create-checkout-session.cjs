@@ -1,6 +1,8 @@
+const Stripe = require('stripe')
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' }
+    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) }
   }
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY
@@ -10,6 +12,8 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: 'Stripe key not configured' }),
     }
   }
+
+  const stripe = Stripe(stripeSecretKey)
 
   try {
     const body = JSON.parse(event.body || '{}')
@@ -22,43 +26,37 @@ exports.handler = async (event) => {
       }
     }
 
-    const params = new URLSearchParams()
-    const siteUrl = 'https://abundance-accepted.com'
+    const siteUrl = process.env.URL || process.env.DEPLOY_URL || 'http://localhost:8888'
 
-    params.append('mode', 'subscription')
-    params.append('payment_method_types[]', 'card')
-    params.append('line_items[0][price]', priceId)
-    params.append('line_items[0][quantity]', '1')
-    params.append('success_url', `${siteUrl}/checkout-success?session_id={CHECKOUT_SESSION_ID}`)
-    params.append('cancel_url', `${siteUrl}/checkout-cancelled`)
-
-    const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + stripeSecretKey,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params.toString(),
+    const session = await stripe.checkout.sessions.create({
+      mode: 'subscription',
+      ui_mode: 'hosted_page',
+      success_url: `${siteUrl}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${siteUrl}/checkout-cancelled`,
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      billing_address_collection: 'auto',
+      payment_method_collection: 'always',
+      allow_promotion_codes: true,
+      submit_type: 'auto',
+      integration_identifier: 'hosted_web_0002',
+      origin_context: 'web',
     })
-
-    const data = await response.json()
-
-    if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: data.error ? data.error.message : 'Stripe error' }),
-      }
-    }
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: data.url }),
+      body: JSON.stringify({ url: session.url }),
     }
   } catch (error) {
+    const message = error && error.message ? error.message : 'Server error'
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Server error: ' + error.message }),
+      body: JSON.stringify({ error: message }),
     }
   }
 }
