@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import type { ContentPlan } from '../lib/contentAgent'
 import { buildContentPlan } from '../lib/contentAgent'
+import { functionUrl } from '../lib/functionUrl'
 
 export default function ContentAgent() {
   const [topic, setTopic] = useState('Intermittent Fasting Basics')
@@ -18,7 +19,7 @@ export default function ContentAgent() {
     setError('')
 
     try {
-      const response = await fetch('/.netlify/functions/generate-content', {
+      const response = await fetch(functionUrl('generate-content'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic }),

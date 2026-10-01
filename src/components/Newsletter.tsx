@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { functionUrl } from '../lib/functionUrl'
 
 export default function Newsletter() {
   const [email, setEmail] = useState('')
@@ -13,7 +14,7 @@ export default function Newsletter() {
     setErrorMessage('')
 
     try {
-      const response = await fetch('/.netlify/functions/subscribe', {
+      const response = await fetch(functionUrl('subscribe'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

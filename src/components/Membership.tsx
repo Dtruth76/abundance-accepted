@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { functionUrl } from '../lib/functionUrl'
 
 const PLUS_PRICE_ID = 'price_1UIjNkCveE8X0WZ1hmhwAB86'
 const ELITE_PRICE_ID = 'price_1TvpEfCveE8X0WZ1thApv17k'
@@ -12,7 +13,7 @@ export default function Membership() {
     setLoading(planName)
     setError(null)
     try {
-      const response = await fetch('/.netlify/functions/create-checkout-session', {
+      const response = await fetch(functionUrl('create-checkout-session'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ priceId }),
@@ -42,7 +43,7 @@ export default function Membership() {
     setError(null)
 
     try {
-      const response = await fetch('/.netlify/functions/create-portal-session', {
+      const response = await fetch(functionUrl('create-portal-session'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),

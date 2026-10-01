@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
+import { functionUrl } from '../lib/functionUrl'
 
 const PHILOSOPHY_SYSTEM_PROMPT = `You are the BioFit AI wellness coach for Abundance Accepted LLC, founded by D — a real person who lost 80 pounds in 11 months through an all-natural lifestyle with no surgery, no diet pills, and no processed foods.
 
@@ -116,7 +117,7 @@ export default function BioFit() {
     }))
 
     try {
-      const response = await fetch('/.netlify/functions/chat', {
+      const response = await fetch(functionUrl('chat'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

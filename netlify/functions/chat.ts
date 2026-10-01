@@ -1,4 +1,4 @@
-export const handler = async (event: any) => {
+const handleRequest = async (event: any) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' }
   }
@@ -32,4 +32,19 @@ export const handler = async (event: any) => {
   } catch (e) {
     return { statusCode: 500, body: JSON.stringify({ error: 'Failed to connect' }) }
   }
+}
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+export const handler = async (event: any) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: corsHeaders, body: '' }
+  }
+
+  const response = await handleRequest(event)
+  return { ...response, headers: { ...corsHeaders, ...response.headers } }
 }

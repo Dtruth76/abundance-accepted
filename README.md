@@ -36,6 +36,25 @@ npm install -g netlify-cli
 npm run dev:netlify
 ```
 
+### Build native Android and iOS apps
+
+The app uses Capacitor to package the Vite build for both platforms. Install the native project shells once:
+
+```bash
+npx cap add android
+npx cap add ios
+```
+
+Build the web assets and sync them into the native projects:
+
+```bash
+npm run build:mobile
+npx cap open android
+npx cap open ios
+```
+
+Android builds require Android Studio, the Android SDK, and JDK 21 (set Android Studio's Gradle JDK to 21). iOS builds require macOS and Xcode. Native builds call the deployed Netlify API at `https://abundance-accepted.com`; set `VITE_API_BASE_URL` at build time to use another deployment. Keep provider secrets such as `ANTHROPIC_API_KEY` in Netlify environment settings, never in the app. The Netlify function endpoints support cross-origin requests for the packaged clients.
+
 This project also has a Vite proxy configured for local Netlify function routes.
 
 ## What's included

@@ -1,8 +1,10 @@
+import { functionUrl } from './functionUrl'
+
 export type MembershipTier = "abundance-plus" | "vip-circle";
 
 export async function startCheckout(tier: MembershipTier, billing: "monthly" | "annual" = "monthly") {
   try {
-    const response = await fetch("/.netlify/functions/create-checkout-session", {
+    const response = await fetch(functionUrl('create-checkout-session'), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ tier, billing }),

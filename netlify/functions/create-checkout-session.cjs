@@ -1,6 +1,6 @@
 const Stripe = require('stripe')
 
-exports.handler = async (event) => {
+const handleRequest = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) }
   }
@@ -62,4 +62,19 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: message }),
     }
   }
+}
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: corsHeaders, body: '' }
+  }
+
+  const response = await handleRequest(event)
+  return { ...response, headers: { ...corsHeaders, ...response.headers } }
 }

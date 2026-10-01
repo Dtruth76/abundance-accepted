@@ -22,7 +22,7 @@ const LOCAL_PLAN = (topic: string) => ({
   },
 })
 
-export const handler: Handler = async (event) => {
+const handleRequest: Handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) }
   }
@@ -76,4 +76,19 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({ plan: LOCAL_PLAN(JSON.parse(event.body || '{}').topic || 'Intermittent Fasting Basics') }),
     }
   }
+}
+
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+export const handler: Handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: corsHeaders, body: '' }
+  }
+
+  const response = await handleRequest(event)
+  return { ...response, headers: { ...corsHeaders, ...response.headers } }
 }

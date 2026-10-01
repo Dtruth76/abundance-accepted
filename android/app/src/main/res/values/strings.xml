@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BioFit</string>
+    <string name="title_activity_main">BioFit</string>
+    <string name="package_name">com.abundanceaccepted.biofit</string>
+    <string name="custom_url_scheme">com.abundanceaccepted.biofit</string>
+</resources>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { functionUrl } from '../lib/functionUrl'
 
 export default function CheckoutSuccess() {
   const [sessionId, setSessionId] = useState('')
@@ -25,7 +26,7 @@ export default function CheckoutSuccess() {
     setError('')
 
     try {
-      const response = await fetch('/.netlify/functions/create-portal-session', {
+      const response = await fetch(functionUrl('create-portal-session'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),
