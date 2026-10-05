@@ -1,14 +1,30 @@
-const handleRequest = async (event: any) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' }
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  })
+
+export default async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('', { status: 204, headers: corsHeaders })
+  }
+  if (req.method !== 'POST') {
+    return new Response('Method Not Allowed', { status: 405, headers: corsHeaders })
   }
   const apiKey = process.env.ANTHROPIC_API_KEY
   if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'No API key' }) }
+    return json({ error: 'No API key' }, 500)
   }
+  const baseUrl = (process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com').replace(/\/$/, '')
   try {
-    const { messages, system } = JSON.parse(event.body || '{}')
-    const r = await fetch('https://api.anthropic.com/v1/messages', {
+    const { messages, system } = await req.json().catch(() => ({}))
+    const r = await fetch(`${baseUrl}/v1/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -24,27 +40,8 @@ const handleRequest = async (event: any) => {
     })
     const data = await r.json()
     const text = data?.content?.[0]?.text || 'Please try again.'
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reply: text }),
-    }
+    return json({ reply: text })
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to connect' }) }
+    return json({ error: 'Failed to connect' }, 500)
   }
-}
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-}
-
-export const handler = async (event: any) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: corsHeaders, body: '' }
-  }
-
-  const response = await handleRequest(event)
-  return { ...response, headers: { ...corsHeaders, ...response.headers } }
 }
