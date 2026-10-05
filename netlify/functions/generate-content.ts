@@ -1,5 +1,3 @@
-import type { Handler } from '@netlify/functions'
-
 const LOCAL_PLAN = (topic: string) => ({
   articleTitle: `${topic || 'Natural Weight Loss'} for Busy Women Who Want Real, Sustainable Results`,
   summary: `Learn the practical habits behind ${String(topic || 'natural weight loss').toLowerCase()} without extreme restrictions, fake shortcuts, or all-or-nothing thinking. This piece stays grounded in whole-food nutrition, daily movement, rest, and accountability.`,
@@ -22,17 +20,34 @@ const LOCAL_PLAN = (topic: string) => ({
   },
 })
 
-const handleRequest: Handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) }
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  })
+
+export default async (req: Request) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('', { status: 204, headers: corsHeaders })
+  }
+  if (req.method !== 'POST') {
+    return json({ error: 'Method Not Allowed' }, 405)
   }
 
-  try {
-    const { topic = 'Intermittent Fasting Basics' } = JSON.parse(event.body || '{}')
+  const body = await req.json().catch(() => ({}))
+  const topic: string = body?.topic || 'Intermittent Fasting Basics'
 
+  try {
     const apiKey = process.env.ANTHROPIC_API_KEY
- if (apiKey) {
-      const response = await fetch('https://api.anthropic.com/v1/messages', {
+    if (apiKey) {
+      const baseUrl = (process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com').replace(/\/$/, '')
+      const response = await fetch(`${baseUrl}/v1/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -51,44 +66,15 @@ const handleRequest: Handler = async (event) => {
       const text = data?.content?.[0]?.text || ''
 
       if (!text) {
-        return { statusCode: 200, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ plan: LOCAL_PLAN(topic) }) }
+        return json({ plan: LOCAL_PLAN(topic) })
       }
 
       const cleanedText = text.replace(/```json|```/g, '').trim()
-      const json = JSON.parse(cleanedText)
-
-      return {
-        statusCode: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: json }),
-      }
+      return json({ plan: JSON.parse(cleanedText) })
     }
 
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: LOCAL_PLAN(topic) }),
-    }
+    return json({ plan: LOCAL_PLAN(topic) })
   } catch (error) {
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: LOCAL_PLAN(JSON.parse(event.body || '{}').topic || 'Intermittent Fasting Basics') }),
-    }
+    return json({ plan: LOCAL_PLAN(topic) })
   }
-}
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-}
-
-export const handler: Handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: corsHeaders, body: '' }
-  }
-
-  const response = await handleRequest(event)
-  return { ...response, headers: { ...corsHeaders, ...response.headers } }
 }
