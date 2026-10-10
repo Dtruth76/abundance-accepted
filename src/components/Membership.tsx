@@ -78,7 +78,7 @@ export default function Membership() {
       features: [
         'Daily wellness tips',
         'Access to free articles',
-        'BioFit basic coaching',
+        'Wake Up & Win™ basic coaching',
         'Community access',
       ],
       cta: 'Join Free',
@@ -94,7 +94,7 @@ export default function Membership() {
       highlight: true,
       features: [
         'Everything in Free',
-        'Full BioFit AI coaching',
+        'Full Wake Up & Win™ AI coaching',
         'Premium article library',
         'Weekly meal prep guides',
         'Ad-free experience',

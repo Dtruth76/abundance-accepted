@@ -17,7 +17,7 @@ export default function Newsletter() {
       <div className="mx-auto max-w-3xl px-6 py-24 text-center">
         <p className="eyebrow-light">Stay in the loop</p>
         <h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-          Get early access to BioFit™ and new drops from Deidra
+          Get early access to Wake Up & Win™ and new drops from Deidra
         </h2>
         <p className="mt-4 text-[17px] leading-relaxed text-parchment/70">
           One email, roughly twice a month. No fads, no spam — just what's working.

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 const LINKS = [
   { href: '#approach', label: 'Our Approach' },
   { href: '#books', label: 'Books' },
-  { href: '#biofit', label: 'BioFit™' },
+  { href: '#biofit', label: 'Wake Up & Win™' },
   { href: '#membership', label: 'Membership' },
   { href: '#shop', label: 'Shop' },
 ]

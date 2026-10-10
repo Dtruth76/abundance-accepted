@@ -13,7 +13,7 @@ export default function DisclaimerPage() {
       alert: true,
       content: [
         'PLEASE READ THIS CAREFULLY. THIS IS THE MOST IMPORTANT DISCLAIMER ON THIS SITE.',
-        'Nothing on abundance-accepted.com, including articles, wellness tips, the BioFit app, AI-generated meal plans and exercise prescriptions, AI coach conversations, newsletter content, or any other content produced by Abundance Accepted LLC, constitutes medical advice, medical diagnosis, medical treatment, or a substitute for the advice of a qualified healthcare professional.',
+        'Nothing on abundance-accepted.com, including articles, wellness tips, the Wake Up & Win™ app, AI-generated meal plans and exercise prescriptions, AI coach conversations, newsletter content, or any other content produced by Abundance Accepted LLC, constitutes medical advice, medical diagnosis, medical treatment, or a substitute for the advice of a qualified healthcare professional.',
         'Abundance Accepted LLC is a wellness education and lifestyle platform — not a medical practice. The founder and owner of Abundance Accepted LLC is not a licensed physician, registered dietitian, certified nutritionist, or licensed mental health professional.',
         'ALWAYS seek the advice of your physician or other qualified health provider before starting any new diet, nutrition plan, exercise program, fasting regimen, or supplementation program. NEVER disregard professional medical advice or delay seeking it because of something you have read or heard on this Site.',
         'If you think you may have a medical emergency, call your doctor or emergency services immediately.',
@@ -30,7 +30,7 @@ export default function DisclaimerPage() {
     {
       title: '3. AI-Generated Content Disclaimer',
       content: [
-        'Abundance Accepted LLC uses artificial intelligence technology to generate wellness tips, meal plans, exercise prescriptions, and chat responses through the BioFit app and AI wellness assistant. AI-generated content is produced by automated systems and has not been reviewed or approved by a licensed healthcare professional.',
+        'Abundance Accepted LLC uses artificial intelligence technology to generate wellness tips, meal plans, exercise prescriptions, and chat responses through the Wake Up & Win™ app and AI wellness assistant. AI-generated content is produced by automated systems and has not been reviewed or approved by a licensed healthcare professional.',
         'AI-generated meal plans, calorie targets, and exercise recommendations are general suggestions only and are not tailored to your specific medical needs or health conditions. The accuracy and appropriateness of AI-generated content cannot be guaranteed. You assume full personal responsibility for any decisions you make based on AI-generated content.',
         'AI-generated content should always be reviewed by a qualified professional before implementation, especially if you have any medical condition.',
       ],

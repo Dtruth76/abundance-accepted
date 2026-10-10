@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="grid grid-cols-2 gap-x-12 gap-y-3 text-sm text-ink-600 sm:grid-cols-3">
             <a href="#approach" className="hover:text-gold-dark">Our Approach</a>
             <a href="#books" className="hover:text-gold-dark">Books</a>
-            <a href="#biofit" className="hover:text-gold-dark">BioFit™</a>
+            <a href="#biofit" className="hover:text-gold-dark">Wake Up & Win™</a>
             <a href="#membership" className="hover:text-gold-dark">Membership</a>
             <a href="#shop" className="hover:text-gold-dark">Shop</a>
             <a href="#newsletter" className="hover:text-gold-dark">Newsletter</a>

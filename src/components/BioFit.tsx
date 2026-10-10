@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { functionUrl } from '../lib/functionUrl'
 
-const PHILOSOPHY_SYSTEM_PROMPT = `You are the BioFit AI wellness coach for Abundance Accepted LLC, founded by D — a real person who lost 80 pounds in 11 months through an all-natural lifestyle with no surgery, no diet pills, and no processed foods.
+const PHILOSOPHY_SYSTEM_PROMPT = `You are the Wake Up & Win™ AI wellness coach for Abundance Accepted LLC, founded by D — a real person who lost 80 pounds in 11 months through an all-natural lifestyle with no surgery, no diet pills, and no processed foods.
 
 You coach visitors using D's philosophy:
 1. Eat fresh whole fruits and vegetables as the foundation of every meal
@@ -32,19 +32,19 @@ export default function BioFit() {
       if (!saved) {
         return [{
           from: 'ai',
-          text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+          text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
         }]
       }
 
       const parsed = JSON.parse(saved) as Message[]
       return Array.isArray(parsed) && parsed.length > 0 ? parsed : [{
         from: 'ai',
-        text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+        text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
       }]
     } catch {
       return [{
         from: 'ai',
-        text: "Hi! I'm your BioFit AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
+        text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
       }]
     }
   })
@@ -135,7 +135,7 @@ export default function BioFit() {
       const reply = data.reply || 'Please try again.'
       setMessages(prev => [...prev, { from: 'ai', text: reply }])
     } catch (error) {
-      console.error('BioFit chat error:', error)
+      console.error('Wake Up & Win™ chat error:', error)
       setMessages(prev => [...prev, { from: 'ai', text: 'I hit a connection issue. Please try again in a moment.' }])
     } finally {
       setLoading(false)
@@ -157,7 +157,7 @@ export default function BioFit() {
         <div className="mb-16 text-center">
           <p className="eyebrow-light">AI-Powered Coaching</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-            BioFit™: Coaching Rooted in Real Results
+            Wake Up & Win™: Coaching Rooted in Real Results
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-parchment/75">
             Built on the same all-natural philosophy that helped D lose 80 pounds in 11 months.
@@ -202,7 +202,7 @@ export default function BioFit() {
           {/* Right — AI Chat */}
           <div className="flex flex-col">
             <h3 className="font-display text-xl font-semibold mb-6 text-gold-light">
-              Ask Your BioFit Coach
+              Ask Your Wake Up & Win™ Coach
             </h3>
 
             {/* Chat box */}
@@ -212,7 +212,7 @@ export default function BioFit() {
               <div className="flex items-center gap-3 px-5 py-4 border-b border-parchment/10 bg-parchment/5">
                 <div className="h-8 w-8 rounded-full bg-gold-light/20 flex items-center justify-center text-sm">🌿</div>
                 <div>
-                  <div className="text-sm font-semibold text-gold-light">BioFit AI Coach</div>
+                  <div className="text-sm font-semibold text-gold-light">Wake Up & Win™ AI Coach</div>
                   <div className="text-xs text-parchment/50">
                     {isOffline ? 'Abundance Accepted LLC · Offline mode' : 'Abundance Accepted LLC · Online'}
                   </div>
@@ -294,9 +294,9 @@ export default function BioFit() {
 
             {installPrompt && (
               <div className="mt-6 rounded-2xl border border-gold-light/30 bg-gold-light/10 p-5">
-                <div className="text-sm font-semibold text-gold-light mb-2">Install BioFit</div>
+                <div className="text-sm font-semibold text-gold-light mb-2">Install Wake Up & Win™</div>
                 <div className="text-parchment/75 text-sm mb-4">
-                  Keep your coaching close at hand. Add BioFit to your home screen for quick access anytime.
+                  Keep your coaching close at hand. Add Wake Up & Win™ to your home screen for quick access anytime.
                 </div>
                 <button type="button" onClick={handleInstallClick} className="btn-primary text-sm">
                   Add to Home Screen
@@ -317,7 +317,7 @@ export default function BioFit() {
 
             {/* Disclaimer */}
             <div className="mt-4 text-xs text-parchment/40 leading-relaxed">
-              ⚕️ BioFit AI coaching is for informational purposes only and does not constitute medical advice.
+              ⚕️ Wake Up & Win™ AI coaching is for informational purposes only and does not constitute medical advice.
               Always consult a qualified physician before starting any new diet or exercise program.
               © 2026 Abundance Accepted LLC. All Rights Reserved.
             </div>

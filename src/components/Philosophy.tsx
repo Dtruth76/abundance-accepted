@@ -22,7 +22,7 @@ export default function Philosophy() {
             <p>
               That's the path Deidra Ward walked to lose nearly 100 pounds in a year, and it's the
               one she's spent years since teaching others to walk too — through her books, her
-              coaching, and now BioFit™. Nothing here is a miracle fix. It's a slower, steadier
+              coaching, and now Wake Up & Win™. Nothing here is a miracle fix. It's a slower, steadier
               case for changing your habits instead of outsourcing the work to a pill or a
               procedure, told by someone who's lived it and backed by what the research says
               actually holds weight off: consistency.

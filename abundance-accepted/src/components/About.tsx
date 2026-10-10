@@ -17,7 +17,7 @@ export default function About() {
               <p>
                 That story became her first book, <em>Wake Up and Workout</em>, followed by{' '}
                 <em>Are You Up For The Challenge?</em>, a step-by-step guide to help readers build
-                the same habits. Today she's building BioFit™, an AI-powered companion for the
+                the same habits. Today she's building Wake Up & Win™, an AI-powered companion for the
                 next chapter of that work.
               </p>
             </div>

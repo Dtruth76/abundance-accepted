@@ -5,10 +5,10 @@ export default function BioFit() {
         <div>
           <p className="eyebrow-light">Coming soon</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-            BioFit™: your habits, tracked without the guesswork
+            Wake Up & Win™: your habits, tracked without the guesswork
           </h2>
           <p className="mt-5 max-w-lg text-[17px] leading-relaxed text-parchment/75">
-            BioFit™ is the AI-powered companion we're building to bring the Abundance Accepted
+            Wake Up & Win™ is the AI-powered companion we're building to bring the Abundance Accepted
             approach into your day-to-day — food, movement, sleep, and mindset in one place,
             guided by the same natural-first philosophy behind Deidra's books.
           </p>

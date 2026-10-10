@@ -12,7 +12,7 @@ const TIERS = [
     tagline: 'For the daily habit-builder',
     features: [
       'Everything in Community',
-      'Full BioFit™ app access',
+      'Full Wake Up & Win™ app access',
       'Monthly live Q&A with Deidra',
       'Printable habit trackers',
     ],

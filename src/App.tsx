@@ -108,7 +108,7 @@ export default function App() {
             onClick={handleInstallClick}
             className="btn-primary shadow-lg"
           >
-            Install BioFit
+            Install Wake Up & Win™
           </button>
         </div>
       )}
