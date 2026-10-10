@@ -1,39 +1,30 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
-declare global {
-  interface Window {
-    instgrm?: {
-      Embeds: {
-        process: () => void
-      }
-    }
-  }
-}
-
-const INSTAGRAM_POST_URL = 'https://www.instagram.com/p/DePbPRfDXGx/'
-const INSTAGRAM_SCRIPT_ID = 'instagram-embed-script'
+const BEHOLD_FEED_ID = 'aQJy1OmmnnKRPr5sauiL'
+const BEHOLD_SCRIPT_ID = 'behold-widget-script'
 
 export default function Instagram() {
+  const widgetContainerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const processEmbeds = () => window.instgrm?.Embeds.process()
+    const widgetContainer = widgetContainerRef.current
+    if (!widgetContainer) return
 
-    if (window.instgrm) {
-      processEmbeds()
-      return
-    }
+    const widget = document.createElement('behold-widget')
+    widget.setAttribute('feed-id', BEHOLD_FEED_ID)
+    widgetContainer.appendChild(widget)
 
-    let script = document.getElementById(INSTAGRAM_SCRIPT_ID) as HTMLScriptElement | null
-
+    let script = document.getElementById(BEHOLD_SCRIPT_ID) as HTMLScriptElement | null
     if (!script) {
       script = document.createElement('script')
-      script.id = INSTAGRAM_SCRIPT_ID
-      script.src = 'https://www.instagram.com/embed.js'
+      script.id = BEHOLD_SCRIPT_ID
+      script.type = 'module'
+      script.src = 'https://w.behold.so/widget.js'
       script.async = true
-      document.body.appendChild(script)
+      document.head.appendChild(script)
     }
 
-    script.addEventListener('load', processEmbeds)
-    return () => script?.removeEventListener('load', processEmbeds)
+    return () => widget.remove()
   }, [])
 
   return (
@@ -55,29 +46,7 @@ export default function Instagram() {
           </a>
         </p>
 
-        <div className="mt-10 flex justify-center overflow-x-auto">
-          <blockquote
-            className="instagram-media"
-            data-instgrm-captioned=""
-            data-instgrm-permalink={INSTAGRAM_POST_URL}
-            data-instgrm-version="14"
-            style={{
-              background: '#fff',
-              border: 0,
-              borderRadius: 3,
-              margin: 0,
-              maxWidth: 540,
-              minWidth: 326,
-              width: '100%',
-            }}
-          >
-            <p className="p-6 text-sm text-ink-600">
-              <a href={INSTAGRAM_POST_URL} target="_blank" rel="noopener noreferrer">
-                View this post on Instagram
-              </a>
-            </p>
-          </blockquote>
-        </div>
+        <div className="mx-auto mt-10 w-full max-w-6xl" ref={widgetContainerRef} />
       </div>
     </section>
   )
