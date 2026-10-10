@@ -4,6 +4,7 @@ import Philosophy from './components/Philosophy'
 import LoopDivider from './components/LoopDivider'
 import Approach from './components/Approach'
 import About from './components/About'
+import Instagram from './components/Instagram'
 import Books from './components/Books'
 import BioFit from './components/BioFit'
 import AdSlot from './components/AdSlot'
@@ -34,6 +35,7 @@ export default function App() {
         <LoopDivider tone="gold" />
         <Approach />
         <About />
+        <Instagram />
         <Books />
         <BioFit />
         <div className="bg-parchment py-16">

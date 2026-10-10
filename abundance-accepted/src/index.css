@@ -1,4 +1,4 @@
-@tailwind base
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -27,11 +27,11 @@ body {
 
 @layer components {
   .eyebrow {
-    @apply front-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-dark font-semibold;
+    @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-dark font-semibold;
   }
 
   .eyebrow-light {
-    @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-light font-semi-bold;
+    @apply font-eyebrow text-[11px] tracking-[0.22em] uppercase text-gold-light font-semibold;
   }
 
   .btn-primary {
