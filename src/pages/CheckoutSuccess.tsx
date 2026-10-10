@@ -66,7 +66,7 @@ export default function CheckoutSuccess() {
         Thanks for joining Abundance Accepted. A confirmation email is on its way — check your inbox to get started.
       </p>
       <p className="mt-3 max-w-lg text-sm text-stone-600">
-        Your 7-day free trial has started. You will not be charged until the trial ends, and you can cancel anytime before billing begins.
+        Your Wake Up & Win subscription is active. Check your email for confirmation and next steps.
       </p>
 
       {error && (

@@ -1,23 +1,41 @@
 import { useState, useRef, useEffect } from 'react'
 import { functionUrl } from '../lib/functionUrl'
 
-const PHILOSOPHY_SYSTEM_PROMPT = `You are the Wake Up & Win™ AI wellness coach for Abundance Accepted LLC, founded by D — a real person who lost 80 pounds in 11 months through an all-natural lifestyle with no surgery, no diet pills, and no processed foods.
-
-You coach visitors using D's philosophy:
-1. Eat fresh whole fruits and vegetables as the foundation of every meal
-2. Limit dairy significantly
-3. Treat fasting as optional; do not prescribe extended fasts or assume fasting is appropriate for everyone
-4. Exercise consistently — any movement counts, start where you are
-5. Rest adequately — sleep is non-negotiable for weight loss
-6. Practice daily self-accountability — track progress honestly every single day
-
-When someone asks for a custom plan, create one directly in your answer instead of referring them to a book. Ask for relevant details when needed, or state reasonable assumptions and provide a practical starter plan. Personalize plans to the user's goals, experience, schedule, food preferences, equipment, and limitations when shared. Include clear steps, a realistic schedule, and ways to track progress. Do not promise specific weight-loss results or present D's experience as typical. Recommend the books only as optional additional resources, never as a substitute for answering the request.
-
-Be warm, direct, motivating, and real. Never recommend diet pills, processed diet foods, surgery, or prolonged fasting. Keep responses concise, but use numbered steps or a simple schedule when that makes a requested plan clearer. End with one specific actionable suggestion. Always add: "Please consult your physician before making major health changes." when giving specific health advice.`
-
 interface Message {
   from: 'user' | 'ai'
   text: string
+}
+
+const DEFAULT_GREETING: Message = {
+  from: 'ai',
+  text: "Hi! I'm the Wake Up & Win™ free PWA coach. I can help with basic, general health and fitness questions. The full app is not available in app stores yet; check back for its launch. For personal medical guidance, please consult a qualified health professional.",
+}
+
+function loadMessages(): Message[] {
+  try {
+    const saved = localStorage.getItem('biofit-chat-history')
+    if (!saved) return [DEFAULT_GREETING]
+
+    const parsed: unknown = JSON.parse(saved)
+    if (!Array.isArray(parsed)) return [DEFAULT_GREETING]
+
+    const messages = parsed.filter((message): message is Message =>
+      typeof message === 'object' &&
+      message !== null &&
+      ((message as Message).from === 'user' || (message as Message).from === 'ai') &&
+      typeof (message as Message).text === 'string'
+    )
+
+    const migrated = messages.map((message) =>
+      message.from === 'ai'
+        ? { ...message, text: message.text.replace(/BioFit™?/gi, 'Wake Up & Win™') }
+        : message
+    )
+
+    return migrated.length > 0 ? migrated : [DEFAULT_GREETING]
+  } catch {
+    return [DEFAULT_GREETING]
+  }
 }
 
 interface BeforeInstallPromptEvent extends Event {
@@ -26,28 +44,7 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export default function BioFit() {
-  const [messages, setMessages] = useState<Message[]>(() => {
-    try {
-      const saved = localStorage.getItem('biofit-chat-history')
-      if (!saved) {
-        return [{
-          from: 'ai',
-          text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
-        }]
-      }
-
-      const parsed = JSON.parse(saved) as Message[]
-      return Array.isArray(parsed) && parsed.length > 0 ? parsed : [{
-        from: 'ai',
-        text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
-      }]
-    } catch {
-      return [{
-        from: 'ai',
-        text: "Hi! I'm your Wake Up & Win™ AI coach, built on the same all-natural philosophy that helped D lose 80 pounds in 11 months — no surgery, no pills, no processed foods. Just real food, movement, rest, and accountability.\n\nAsk me anything about intermittent fasting, whole food nutrition, exercise, or how to stay consistent. I'm here to help!"
-      }]
-    }
-  })
+  const [messages, setMessages] = useState<Message[]>(loadMessages)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
@@ -121,7 +118,6 @@ export default function BioFit() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          system: PHILOSOPHY_SYSTEM_PROMPT,
           messages: [...history, { role: 'user', content: text }],
         }),
       })
@@ -143,10 +139,10 @@ export default function BioFit() {
   }
 
   const quickQuestions = [
-    'How do I start intermittent fasting?',
-    'What should I eat to lose weight naturally?',
-    'How did D lose 80 pounds?',
-    'I hit a plateau — what do I do?',
+    'What are some beginner-friendly ways to move more?',
+    'What does a balanced meal generally include?',
+    'How can I build a consistent sleep routine?',
+    'How can I make exercise a habit?',
   ]
 
   return (
@@ -155,13 +151,13 @@ export default function BioFit() {
 
         {/* Header */}
         <div className="mb-16 text-center">
-          <p className="eyebrow-light">AI-Powered Coaching</p>
+          <p className="eyebrow-light">Free PWA Support</p>
           <h2 className="mt-4 font-display text-3xl font-semibold leading-tight sm:text-4xl">
-            Wake Up & Win™: Coaching Rooted in Real Results
+            Basic Health & Fitness Guidance
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-[17px] leading-relaxed text-parchment/75">
-            Built on the same all-natural philosophy that helped D lose 80 pounds in 11 months.
-            No surgery. No pills. No processed foods. Just whole food, movement, rest, and daily accountability.
+            Ask general questions about everyday nutrition, movement, sleep, and healthy habits.
+            For personalized coaching, look for the full Wake Up & Win™ app when it launches in app stores.
           </p>
         </div>
 
@@ -174,12 +170,10 @@ export default function BioFit() {
             </h3>
             <div className="space-y-4">
               {[
-                { icon: '🥦', title: 'Whole Foods First', desc: 'Fresh fruits and vegetables form the foundation of every meal. Real food, not processed substitutes.' },
-                { icon: '⏱️', title: 'Intermittent Fasting', desc: 'Start with one 36-hour fast per month, then transition to a daily 16:8 window as your body adapts.' },
-                { icon: '🥛', title: 'Limit Dairy', desc: 'Reducing dairy is a key part of the natural approach that supported D\'s 80-pound transformation.' },
-                { icon: '💪', title: 'Consistent Movement', desc: 'Any movement counts. Start where you are and build consistency over intensity.' },
-                { icon: '😴', title: 'Rest and Recovery', desc: 'Sleep is non-negotiable. Adequate rest is one of the most underrated weight loss tools.' },
-                { icon: '📋', title: 'Daily Accountability', desc: 'Track your progress honestly every single day. Self-accountability is the foundation of lasting change.' },
+                { icon: '🥦', title: 'Everyday Nutrition', desc: 'Learn general ways to include a variety of nourishing foods in everyday meals.' },
+                { icon: '💪', title: 'Gentle Movement', desc: 'Explore beginner-friendly ways to add movement that fit your abilities and routine.' },
+                { icon: '😴', title: 'Rest and Recovery', desc: 'Understand how consistent sleep and rest can support general wellbeing.' },
+                { icon: '📋', title: 'Healthy Habits', desc: 'Find simple, realistic ways to build consistency without all-or-nothing rules.' },
               ].map(pillar => (
                 <div key={pillar.title} className="flex items-start gap-4 rounded-2xl border border-parchment/10 bg-parchment/5 px-5 py-4">
                   <span className="text-2xl">{pillar.icon}</span>
@@ -202,7 +196,7 @@ export default function BioFit() {
           {/* Right — AI Chat */}
           <div className="flex flex-col">
             <h3 className="font-display text-xl font-semibold mb-6 text-gold-light">
-              Ask Your Wake Up & Win™ Coach
+              Ask the Wake Up & Win™ PWA Coach
             </h3>
 
             {/* Chat box */}
@@ -212,7 +206,7 @@ export default function BioFit() {
               <div className="flex items-center gap-3 px-5 py-4 border-b border-parchment/10 bg-parchment/5">
                 <div className="h-8 w-8 rounded-full bg-gold-light/20 flex items-center justify-center text-sm">🌿</div>
                 <div>
-                  <div className="text-sm font-semibold text-gold-light">Wake Up & Win™ AI Coach</div>
+                  <div className="text-sm font-semibold text-gold-light">Wake Up & Win™ PWA Coach</div>
                   <div className="text-xs text-parchment/50">
                     {isOffline ? 'Abundance Accepted LLC · Offline mode' : 'Abundance Accepted LLC · Online'}
                   </div>
@@ -294,9 +288,9 @@ export default function BioFit() {
 
             {installPrompt && (
               <div className="mt-6 rounded-2xl border border-gold-light/30 bg-gold-light/10 p-5">
-                <div className="text-sm font-semibold text-gold-light mb-2">Install Wake Up & Win™</div>
+                <div className="text-sm font-semibold text-gold-light mb-2">Install the free PWA</div>
                 <div className="text-parchment/75 text-sm mb-4">
-                  Keep your coaching close at hand. Add Wake Up & Win™ to your home screen for quick access anytime.
+                  Add basic Wake Up & Win™ PWA access to your home screen. The full app will be announced when it is available in app stores.
                 </div>
                 <button type="button" onClick={handleInstallClick} className="btn-primary text-sm">
                   Add to Home Screen
@@ -304,15 +298,12 @@ export default function BioFit() {
               </div>
             )}
 
-            {/* Books CTA */}
+            {/* Full app launch status */}
             <div className="mt-6 rounded-2xl border border-parchment/10 bg-parchment/5 p-5">
-              <div className="text-sm font-semibold text-gold-light mb-2">Want to go deeper?</div>
+              <div className="text-sm font-semibold text-gold-light mb-2">Full app coming soon</div>
               <div className="text-parchment/70 text-sm mb-4">
-                D's books walk you through the exact mindset and methods behind the 80-pound transformation.
+                Wake Up & Win™ is not available in Google Play or the App Store yet. Download details and subscription options will be shared after launch.
               </div>
-              <a href="#books" className="btn-primary text-sm">
-                Get the Books on Amazon
-              </a>
             </div>
 
             {/* Disclaimer */}

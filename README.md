@@ -64,14 +64,16 @@ This project also has a Vite proxy configured for local Netlify function routes.
 - **Books section** (`src/components/Books.tsx`) — both books link out to their real Amazon
   listings. Swap `BookCover` for real cover photography whenever you have it (drop the images in
   `public/` and replace the placeholder `<BookCover />` with an `<img>`).
-- **BioFit™ teaser** and **newsletter capture** (`src/components/Newsletter.tsx`) — the form is
+- **Wake Up & Win™ PWA** (`src/components/BioFit.tsx`) provides basic, general health and fitness
+  guidance. The full app and paid subscription are held until the app-store launch.
+- **Newsletter capture** (`src/components/Newsletter.tsx`) — the form is
   client-side only right now (it just confirms in the UI). Wire the `handleSubmit` function up to
   your email provider (ConvertKit, Mailchimp, Beehiiv) or a serverless function before launch.
-- **Membership tiers** (`src/components/Membership.tsx`) — placeholder pricing/features, edit
-  freely.
+- **Free membership** (`src/components/Membership.tsx`) — daily wellness tips, access to all
+  articles, and basic Wake Up & Win™ PWA access.
 - **Affiliate shop** (`src/components/AffiliateShop.tsx`) — placeholder product grid with an
   affiliate-disclosure line already in place; swap in real product photos and links.
-- **Display ad slot** (`src/components/AdSlot.tsx`) — one reserved slot below the BioFit™ section.
+- **Display ad slot** (`src/components/AdSlot.tsx`) — one reserved slot below the Wake Up & Win™ section.
   Replace the placeholder `<div>` with your ad network's real embed once approved (e.g. Google
   AdSense) — add more `<AdSlot />` instances anywhere you want additional inventory.
 

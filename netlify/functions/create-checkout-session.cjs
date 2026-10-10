@@ -5,6 +5,14 @@ const handleRequest = async (event) => {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method Not Allowed' }) }
   }
 
+  if (!process.env.WAKE_UP_WIN_APP_STORE_URL) {
+    return {
+      statusCode: 503,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ error: 'Wake Up & Win app checkout will open after the app-store launch.' }),
+    }
+  }
+
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY
   if (!stripeSecretKey) {
     return {
@@ -26,6 +34,14 @@ const handleRequest = async (event) => {
       }
     }
 
+    if (priceId !== 'price_1UP7OWCveE8X0WZ1KgnQEF7s') {
+      return {
+        statusCode: 503,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Wake Up & Win app checkout will open after the app-store launch.' }),
+      }
+    }
+
     const siteUrl = process.env.URL || process.env.DEPLOY_URL || 'http://localhost:8888'
 
     const session = await stripe.checkout.sessions.create({
@@ -39,9 +55,6 @@ const handleRequest = async (event) => {
           quantity: 1,
         },
       ],
-      subscription_data: {
-        trial_period_days: 7,
-      },
       billing_address_collection: 'auto',
       payment_method_collection: 'always',
       allow_promotion_codes: true,
